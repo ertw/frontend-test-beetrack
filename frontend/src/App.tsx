@@ -45,10 +45,24 @@ const Count = () => {
 function App() {
   return (
     <Provider store={store}>
-      <div className="App">
-        <header className="App-header">
+      <div className="app">
+        <header className="header">
+          Test Beetrack
           <Count />
         </header>
+        <main className="main">
+          <input type="text" placeholder="Buscar contacto"/>
+          <button className="addUser">+ Nuevo Contacto</button>
+          <table className="users">
+            <th className="userNameHeader">Nombre</th>
+            <th className="userDescriptionHeader">Descripción</th>
+            <tr className="user">
+              <td className="userName">User Name</td>
+              <td className="userDescription">User Description</td>
+            </tr>
+          </table>
+          <button className="nextPage">Siguiente Página</button>
+        </main>
       </div>
     </Provider>
   );
