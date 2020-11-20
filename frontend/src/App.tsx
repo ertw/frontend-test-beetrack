@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { createSlice, configureStore } from '@reduxjs/toolkit'
 import { createSelectorHook, Provider, useDispatch } from 'react-redux'
+import { User } from './components/User';
 
 type SliceState = {
   count: number,
@@ -56,10 +57,14 @@ function App() {
           <table className="users">
             <th className="userNameHeader">Nombre</th>
             <th className="userDescriptionHeader">Descripción</th>
-            <tr className="user">
-              <td className="userName">User Name</td>
-              <td className="userDescription">User Description</td>
-            </tr>
+            {[
+              {
+                "id": 1,
+                "name": "Francisco",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                "photo": "https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?h=350&auto=compress&cs=tinysrgb"
+              },
+            ].map(user => (<User {...user} />))}
           </table>
           <button className="nextPage">Siguiente Página</button>
         </main>
