@@ -3,6 +3,7 @@ import './App.css';
 import { createSlice, configureStore } from '@reduxjs/toolkit'
 import { createSelectorHook, Provider, useDispatch } from 'react-redux'
 import { User } from './components/User';
+import { Users } from './components/Users';
 
 type SliceState = {
   count: number,
@@ -12,15 +13,15 @@ const counterSlice = createSlice({
   name: 'counter',
   initialState: { count: 0 } as SliceState,
   reducers: {
-    increment: state => ({...state, count: state.count + 1}),
-    decrement: state => ({...state, count: state.count - 1}),
+    increment: state => ({ ...state, count: state.count + 1 }),
+    decrement: state => ({ ...state, count: state.count - 1 }),
   }
 })
 
 const store = configureStore({
   reducer: {
     count: counterSlice.reducer,
-  } 
+  }
 })
 
 type RootState = ReturnType<typeof store.getState>
@@ -52,20 +53,9 @@ function App() {
           <Count />
         </header>
         <main className="main">
-          <input type="text" placeholder="Buscar contacto"/>
+          <input type="text" placeholder="Buscar contacto" />
           <button className="addUser">+ Nuevo Contacto</button>
-          <table className="users">
-            <th className="userNameHeader">Nombre</th>
-            <th className="userDescriptionHeader">Descripción</th>
-            {[
-              {
-                "id": 1,
-                "name": "Francisco",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                "photo": "https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?h=350&auto=compress&cs=tinysrgb"
-              },
-            ].map(user => (<User {...user} />))}
-          </table>
+          <Users />
           <button className="nextPage">Siguiente Página</button>
         </main>
       </div>
