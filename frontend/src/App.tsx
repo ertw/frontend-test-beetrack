@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { createSlice, configureStore } from '@reduxjs/toolkit'
-import { Provider, useDispatch, useSelector } from 'react-redux'
+import { createSelectorHook, Provider, useDispatch } from 'react-redux'
 
 type SliceState = {
   count: number,
@@ -23,10 +23,13 @@ const store = configureStore({
 })
 
 type RootState = ReturnType<typeof store.getState>
+type AppDispatch = typeof store.dispatch
+export const useAppDispatch = () => useDispatch<AppDispatch>()
+export const useTypedSelector = createSelectorHook<RootState>();
 
 const Count = () => {
-  const count = useSelector<RootState>(state => state.count.count)
-  const dispatch = useDispatch()
+  const count = useTypedSelector(state => state.count.count)
+  const dispatch = useAppDispatch()
   const { increment, decrement } = counterSlice.actions
   return (
     <div>
