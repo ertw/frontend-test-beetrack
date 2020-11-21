@@ -14,6 +14,10 @@ td {
   border-bottom: 1px solid #dddddd;
 }
 
+table {
+  border-collapse: collapse;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
