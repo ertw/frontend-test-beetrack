@@ -1,6 +1,6 @@
 import { unwrapResult } from '@reduxjs/toolkit';
 import React, { useEffect } from 'react'
-import { useAppDispatch, useTypedSelector, fetchUsers } from '../App';
+import { useAppDispatch, useTypedSelector, fetchUsers } from '../utilities/store';
 import { User } from './User';
 
 interface Props {
