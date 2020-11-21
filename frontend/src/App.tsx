@@ -4,6 +4,13 @@ import { Provider } from 'react-redux'
 import { Users } from './components/Users';
 import { store } from './utilities/store';
 
+const styles: { [key: string]: React.CSSProperties } = {
+  searchAndAddContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+}
+
 function App() {
   return (
     <Provider store={store}>
@@ -12,10 +19,11 @@ function App() {
           Test Beetrack
         </header>
         <main className="main">
-          <input type="text" placeholder="Buscar contacto" />
-          <button className="addUser">+ Nuevo Contacto</button>
+          <div className="searchAndAddContainer" style={styles.searchAndAddContainer}>
+            <input type="text" placeholder="Buscar contacto" />
+            <button className="addUser">+ Nuevo Contacto</button>
+          </div>
           <Users />
-          <button className="nextPage">Siguiente Página</button>
         </main>
       </div>
     </Provider>

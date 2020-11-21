@@ -7,6 +7,16 @@ interface Props {
 }
 
 const styles: { [key: string]: React.CSSProperties } = {
+  users: {
+    minWidth: '100%',
+  },
+  footer: {
+  },
+  paginationContainer: {
+    display: 'flex',
+    justifyContent: 'end',
+    paddingRight: 'unset',
+  }
 }
 
 export const Users: React.FC<Props> = () => {
@@ -35,6 +45,14 @@ export const Users: React.FC<Props> = () => {
       <tbody>
         {users?.map(user => (<User key={user.id} {...user} />))}
       </tbody>
+      <tfoot className="footer" style={styles.footer}>
+        <tr>
+          <td />
+          <td className="paginationContainer" style={styles.paginationContainer}>
+            <button className="nextPage">Siguiente Página</button>
+          </td>
+        </tr>
+      </tfoot>
     </table>
   );
 }
