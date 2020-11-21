@@ -1,16 +1,29 @@
-import React from 'react'
+import { unwrapResult } from '@reduxjs/toolkit';
+import React, { useEffect } from 'react'
+import { useAppDispatch, useTypedSelector, fetchUsers } from '../App';
 import { User } from './User';
 
 interface Props {
 }
 
 const styles: { [key: string]: React.CSSProperties } = {
-  users: {
-    borderCollapse: 'collapse',
-  },
 }
 
 export const Users: React.FC<Props> = () => {
+  const { users, loading } = useTypedSelector(state => state.users)
+  const dispatch = useAppDispatch()
+  const fetchAllUsers = async () => {
+    try {
+      const resultAction = await dispatch(fetchUsers())
+      const fetchedUsers = unwrapResult(resultAction)
+      console.log('success', `Fetched`)
+    } catch (err) {
+      console.log('error', `Fetch failed: ${err.message}`)
+    }
+  }
+  useEffect(() => {
+    fetchAllUsers()
+  }, [])
   return (
     <table className="users" style={styles.users}>
       <thead>
@@ -20,14 +33,7 @@ export const Users: React.FC<Props> = () => {
         </tr>
       </thead>
       <tbody>
-        {[
-          {
-            "id": 1,
-            "name": "Francisco",
-            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            "photo": "https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?h=350&auto=compress&cs=tinysrgb"
-          },
-        ].map(user => (<User key={user.id} {...user} />))}
+        {users?.map(user => (<User key={user.id} {...user} />))}
       </tbody>
     </table>
   );

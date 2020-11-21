@@ -1,28 +1,60 @@
 import React from 'react';
 import './App.css';
-import { createSlice, configureStore } from '@reduxjs/toolkit'
+import { createSlice, configureStore, createAsyncThunk } from '@reduxjs/toolkit'
 import { createSelectorHook, Provider, useDispatch } from 'react-redux'
-import { User } from './components/User';
 import { Users } from './components/Users';
 
-type SliceState = {
-  count: number,
+type UsersSlice = {
+  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
+  users: {
+    name: string
+    description: string
+    id: number
+    photo: string
+  }[]
 }
 
-const counterSlice = createSlice({
-  name: 'counter',
-  initialState: { count: 0 } as SliceState,
-  reducers: {
-    increment: state => ({ ...state, count: state.count + 1 }),
-    decrement: state => ({ ...state, count: state.count - 1 }),
+export const fetchUsers = createAsyncThunk(
+  'users/fetchUsers',
+  async () => {
+    const response = await fetch(`http://localhost:3000/api/users/`)
+    return (await response.json())
+  }
+)
+
+export const usersSlice = createSlice({
+  name: 'users',
+  initialState: {
+    loading: 'idle',
+    users: [],
+  } as UsersSlice,
+  reducers: {},
+  extraReducers: builder => {
+    builder.addCase(fetchUsers.pending, (state, action) => {
+      state.loading = 'pending'
+      console.log(state, action)
+    })
+    builder.addCase(fetchUsers.fulfilled, (state, action) => {
+      state.loading = 'idle'
+      state.users = action.payload
+      console.log(state, action)
+    })
+    builder.addCase(fetchUsers.rejected, (state, action) => {
+      state.loading = 'idle'
+      console.log(state, action)
+    })
   }
 })
 
 const store = configureStore({
   reducer: {
-    count: counterSlice.reducer,
+    users: usersSlice.reducer,
   }
 })
+
+export const actions = {
+  ...usersSlice.actions,
+}
 
 type RootState = ReturnType<typeof store.getState>
 type AppDispatch = typeof store.dispatch
@@ -30,16 +62,12 @@ export const useAppDispatch = () => useDispatch<AppDispatch>()
 export const useTypedSelector = createSelectorHook<RootState>();
 
 const Count = () => {
-  const count = useTypedSelector(state => state.count.count)
-  const dispatch = useAppDispatch()
-  const { increment, decrement } = counterSlice.actions
+  const { loading } = useTypedSelector(state => state.users)
   return (
     <div>
-      <button onClick={() => dispatch(increment())}>+</button>
       <p>
-        COUNT: {count}
+        {loading}
       </p>
-      <button onClick={() => dispatch(decrement())}>-</button>
     </div>
   )
 }
