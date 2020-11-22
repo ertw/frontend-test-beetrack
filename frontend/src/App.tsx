@@ -1,8 +1,9 @@
-import React from 'react';
-import './App.css';
+import React from 'react'
+import './App.css'
 import { Provider } from 'react-redux'
-import { Users } from './components/Users';
-import { store } from './utilities/store';
+import { Users } from './components/Users'
+import { store } from './utilities/store'
+import { AddUserButton } from './components/AddUser'
 
 const styles: { [key: string]: React.CSSProperties } = {
   searchAndAddContainer: {
@@ -21,13 +22,13 @@ function App() {
         <main className="main">
           <div className="searchAndAddContainer" style={styles.searchAndAddContainer}>
             <input type="text" placeholder="Buscar contacto" />
-            <button className="addUser">+ Nuevo Contacto</button>
+            <AddUserButton />
           </div>
           <Users />
         </main>
       </div>
     </Provider>
-  );
+  )
 }
 
-export default App;
+export default App

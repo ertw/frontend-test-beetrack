@@ -1,6 +1,8 @@
 import { createSlice, configureStore, createAsyncThunk } from '@reduxjs/toolkit'
 import { createSelectorHook, useDispatch } from 'react-redux'
 
+const BASE_USERS_API = 'http://localhost:3000/api/users/'
+
 interface User {
   name: string
   description: string
@@ -24,12 +26,30 @@ const initialState: UsersSlice = {
   },
 }
 
+export const addUser = createAsyncThunk<UsersSlice["users"], Omit<User, "id"> | undefined, { state: RootState }>(
+  'users/addUser',
+  async (user = {
+    name: "test name",
+    description: "test description",
+    photo: "test photo",
+  }) => {
+    const response = await fetch(BASE_USERS_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(user)
+    })
+    return (await response.json())
+  }
+)
+
 export const fetchAllUsers = createAsyncThunk<UsersSlice["users"], number | undefined, { state: RootState }>(
   'users/fetchUsers',
   async (page = 1, thunkAPI) => {
     const state = thunkAPI.getState()
     const limit = state?.users?.visibleUsers?.limit ?? initialState.visibleUsers.limit
-    const response = await fetch(`http://localhost:3000/api/users/?_page=${page}&_limit=${limit}`)
+    const response = await fetch(`${BASE_USERS_API}?_page=${page}&_limit=${limit}`)
     return (await response.json())
   }
 )
@@ -39,6 +59,18 @@ export const usersSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => {
+    builder.addCase(addUser.pending, (state, action) => {
+      state.loading = 'pending'
+      console.log('pending', state, action)
+    })
+    builder.addCase(addUser.fulfilled, (state, action) => {
+      state.loading = 'idle'
+      console.log('fulfilled', state, action)
+    })
+    builder.addCase(addUser.rejected, (state, action) => {
+      state.loading = 'failed'
+      console.log('rejected', state, action)
+    })
     builder.addCase(fetchAllUsers.pending, (state, action) => {
       state.loading = 'pending'
       console.log('pending', state, action)
