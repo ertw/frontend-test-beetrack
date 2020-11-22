@@ -1,4 +1,5 @@
 import React from 'react'
+import missingAvatar from '../assets/missingAvatar.gif'
 
 interface Props {
   name: string
@@ -28,10 +29,17 @@ const styles: { [key: string]: React.CSSProperties } = {
 }
 
 export const User: React.FC<Props> = ({ name, description, photo }) => {
+  const [avatarSrc, setAvatarSrc] = React.useState(photo)
   return (
     <tr className="user" style={styles.user}>
       <td className="userName" style={styles.userName}>
-        <img className="avatar" style={styles.avatar} src={photo} alt={`${name} avatar`} />
+        <img
+          className="avatar"
+          style={styles.avatar}
+          src={avatarSrc}
+          alt={`${name} avatar`}
+          onError={() => { setAvatarSrc(missingAvatar) }}
+        />
         <p>
           {name}
         </p>
