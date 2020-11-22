@@ -1,44 +1,56 @@
 import { createSlice, configureStore, createAsyncThunk } from '@reduxjs/toolkit'
 import { createSelectorHook, useDispatch } from 'react-redux'
 
-type UsersSlice = {
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  users: {
-    name: string
-    description: string
-    id: number
-    photo: string
-  }[]
+interface User {
+  name: string
+  description: string
+  id: number
+  photo: string
 }
 
-export const fetchUsers = createAsyncThunk(
+interface UsersSlice {
+  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
+  users: User[]
+  visibleUsers: {
+    limit: number
+  },
+}
+
+const initialState: UsersSlice = {
+  loading: 'idle',
+  users: [],
+  visibleUsers: {
+    limit: 2,
+  },
+}
+
+export const fetchAllUsers = createAsyncThunk<UsersSlice["users"], number | undefined, { state: RootState }>(
   'users/fetchUsers',
-  async () => {
-    const response = await fetch(`http://localhost:3000/api/users/`)
+  async (page = 1, thunkAPI) => {
+    const state = thunkAPI.getState()
+    const limit = state?.users?.visibleUsers?.limit ?? initialState.visibleUsers.limit
+    const response = await fetch(`http://localhost:3000/api/users/?_page=${page}&_limit=${limit}`)
     return (await response.json())
   }
 )
 
 export const usersSlice = createSlice({
   name: 'users',
-  initialState: {
-    loading: 'idle',
-    users: [],
-  } as UsersSlice,
+  initialState,
   reducers: {},
   extraReducers: builder => {
-    builder.addCase(fetchUsers.pending, (state, action) => {
+    builder.addCase(fetchAllUsers.pending, (state, action) => {
       state.loading = 'pending'
-      console.log(state, action)
+      console.log('pending', state, action)
     })
-    builder.addCase(fetchUsers.fulfilled, (state, action) => {
+    builder.addCase(fetchAllUsers.fulfilled, (state, action) => {
       state.loading = 'idle'
       state.users = action.payload
-      console.log(state, action)
+      console.log('fulfilled', state, action)
     })
-    builder.addCase(fetchUsers.rejected, (state, action) => {
-      state.loading = 'idle'
-      console.log(state, action)
+    builder.addCase(fetchAllUsers.rejected, (state, action) => {
+      state.loading = 'failed'
+      console.log('rejected', state, action)
     })
   }
 })
@@ -55,5 +67,6 @@ export const actions = {
 
 type RootState = ReturnType<typeof store.getState>
 type AppDispatch = typeof store.dispatch
+
 export const useAppDispatch = () => useDispatch<AppDispatch>()
 export const useTypedSelector = createSelectorHook<RootState>();
