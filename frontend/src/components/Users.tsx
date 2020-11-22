@@ -12,12 +12,21 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   footer: {
   },
-  paginationContainer: {
-    display: 'flex',
-    justifyContent: 'end',
+  previousPageContainer: {
+    paddingLeft: 'unset',
+  },
+  nextPageContainer: {
     paddingRight: 'unset',
-  }
+  },
+  nextButton: {
+    float: 'right',
+  },
 }
+
+const PageNavigationButton: React.FC<{ text: string, style?: React.CSSProperties }> = ({ text, style }) => (
+  <button style={style} className="previousPage">{text}</button>
+)
+
 
 export const Users: React.FC<Props> = () => {
   const { users, loading } = useTypedSelector(state => state.users)
@@ -47,9 +56,11 @@ export const Users: React.FC<Props> = () => {
       </tbody>
       <tfoot className="footer" style={styles.footer}>
         <tr>
-          <td />
-          <td className="paginationContainer" style={styles.paginationContainer}>
-            <button className="nextPage">Siguiente Página</button>
+          <td className="previousPageContainer" style={styles.previousPageContainer}>
+            <PageNavigationButton text="Página Anterior" />
+          </td>
+          <td className="nextPageContainer" style={styles.nextPageContainer}>
+            <PageNavigationButton style={styles.nextButton} text="Siguiente Página" />
           </td>
         </tr>
       </tfoot>
