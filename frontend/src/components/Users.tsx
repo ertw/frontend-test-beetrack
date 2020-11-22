@@ -22,12 +22,10 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 }
 
-interface PageNavigationButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  text: string;
-}
+interface PageNavigationButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> { }
 
-const PageNavigationButton: React.FC<PageNavigationButtonProps> = ({ text, ...props }) => (
-  <button {...props} className="previousPage">{text}</button>
+const PageNavigationButton: React.FC<PageNavigationButtonProps> = ({ children, ...props }) => (
+  <button {...props} className="previousPage">{children}</button>
 )
 
 export const Users: React.FC<Props> = () => {
@@ -66,16 +64,18 @@ export const Users: React.FC<Props> = () => {
             <PageNavigationButton
               onClick={() => setPage((prev) => prev > 1 ? prev - 1 : prev)}
               disabled={page === 1 || loading !== 'idle'}
-              text="Página Anterior"
-            />
+            >
+              Página Anterior
+            </PageNavigationButton>
           </td>
           <td className="nextPageContainer" style={styles.nextPageContainer}>
             <PageNavigationButton
               onClick={() => setPage((prev) => prev + 1)}
               disabled={users?.length < 2 || loading !== 'idle'}
               style={styles.nextButton}
-              text="Siguiente Página"
-            />
+            >
+              Siguiente Página
+            </PageNavigationButton>
           </td>
         </tr>
       </tfoot>
