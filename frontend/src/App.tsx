@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import { Users } from './components/Users'
 import { store } from './utilities/store'
 import { AddUserButton } from './components/AddUser'
+import { SearchUser } from './components/GetUser'
 
 const styles: { [key: string]: React.CSSProperties } = {
   searchAndAddContainer: {
@@ -21,7 +22,7 @@ function App() {
         </header>
         <main className="main">
           <div className="searchAndAddContainer" style={styles.searchAndAddContainer}>
-            <input type="text" placeholder="Buscar contacto" />
+            <SearchUser />
             <AddUserButton />
           </div>
           <Users />

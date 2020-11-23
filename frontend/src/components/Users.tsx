@@ -56,7 +56,7 @@ export const Users: React.FC<Props> = () => {
         </tr>
       </thead>
       <tbody>
-        {(users?.length > 0 && users.map(user => (<User key={user.id} {...user} />))) || "No more users"}
+        {(users?.length > 0 && users.map(user => (<User key={user.id} {...user} />))) || "Usuario no encontrado"}
       </tbody>
       <tfoot className="footer" style={styles.footer}>
         <tr>

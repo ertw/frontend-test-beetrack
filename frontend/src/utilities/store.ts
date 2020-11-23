@@ -54,35 +54,47 @@ export const fetchAllUsers = createAsyncThunk<UsersSlice["users"], number | unde
   }
 )
 
+export const fetchUserByID = createAsyncThunk<User, number, { state: RootState }>(
+  'users/fetchUserByID',
+  async (id = 1) => {
+    const response = await fetch(`${BASE_USERS_API}/${id}`)
+    return (await response.json())
+  }
+)
+
 export const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {},
   extraReducers: builder => {
-    builder.addCase(addUser.pending, (state, action) => {
+    builder.addCase(addUser.pending, (state) => {
       state.loading = 'pending'
-      console.log('pending', state, action)
     })
-    builder.addCase(addUser.fulfilled, (state, action) => {
+    builder.addCase(addUser.fulfilled, (state) => {
       state.loading = 'idle'
-      console.log('fulfilled', state, action)
     })
-    builder.addCase(addUser.rejected, (state, action) => {
+    builder.addCase(addUser.rejected, (state) => {
       state.loading = 'failed'
-      console.log('rejected', state, action)
     })
-    builder.addCase(fetchAllUsers.pending, (state, action) => {
+    builder.addCase(fetchAllUsers.pending, (state) => {
       state.loading = 'pending'
-      console.log('pending', state, action)
     })
     builder.addCase(fetchAllUsers.fulfilled, (state, action) => {
       state.loading = 'idle'
       state.users = action.payload
-      console.log('fulfilled', state, action)
     })
-    builder.addCase(fetchAllUsers.rejected, (state, action) => {
+    builder.addCase(fetchAllUsers.rejected, (state) => {
       state.loading = 'failed'
-      console.log('rejected', state, action)
+    })
+    builder.addCase(fetchUserByID.pending, (state) => {
+      state.loading = 'pending'
+    })
+    builder.addCase(fetchUserByID.fulfilled, (state, action) => {
+      state.loading = 'idle'
+      state.users = isFinite(action.payload.id) ? [action.payload] : []
+    })
+    builder.addCase(fetchUserByID.rejected, (state) => {
+      state.loading = 'failed'
     })
   }
 })
