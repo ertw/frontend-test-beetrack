@@ -40,7 +40,7 @@ export const addUser = createAsyncThunk<UsersSlice["users"], Omit<User, "id"> | 
       },
       body: JSON.stringify(user)
     })
-    return (await response.json())
+    return (response.json())
   }
 )
 
@@ -50,15 +50,22 @@ export const fetchAllUsers = createAsyncThunk<UsersSlice["users"], number | unde
     const state = thunkAPI.getState()
     const limit = state?.users?.visibleUsers?.limit ?? initialState.visibleUsers.limit
     const response = await fetch(`${BASE_USERS_API}?_page=${page}&_limit=${limit}`)
-    return (await response.json())
+    return (response.json())
   }
 )
 
 export const fetchUserByID = createAsyncThunk<User, number, { state: RootState }>(
   'users/fetchUserByID',
-  async (id = 1) => {
-    const response = await fetch(`${BASE_USERS_API}/${id}`)
-    return (await response.json())
+  async (id = 1, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`${BASE_USERS_API}/${id}`)
+      if (response.status !== 200) {
+        throw new Error(response.statusText)
+      }
+      return (response.json())
+    } catch (err) {
+      return rejectWithValue(err.response.data)
+    }
   }
 )
 
@@ -91,7 +98,7 @@ export const usersSlice = createSlice({
     })
     builder.addCase(fetchUserByID.fulfilled, (state, action) => {
       state.loading = 'idle'
-      state.users = isFinite(action.payload.id) ? [action.payload] : []
+      state.users = [action.payload]
     })
     builder.addCase(fetchUserByID.rejected, (state) => {
       state.loading = 'failed'

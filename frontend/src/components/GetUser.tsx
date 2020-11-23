@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { fetchUserByID, useAppDispatch, useTypedSelector } from '../utilities/store'
+import { fetchAllUsers, fetchUserByID, useAppDispatch, useTypedSelector } from '../utilities/store'
 
 const styles: { [key: string]: React.CSSProperties } = {
   addUserButton: {},
@@ -14,7 +14,12 @@ export const SearchUser = () => {
       onSubmit={(e) => {
         e.preventDefault()
         const id = parseInt(value)
-        dispatch(fetchUserByID(id))
+        if (isNaN(id) /* allow an empty query to get all users */) {
+          dispatch(fetchAllUsers())
+        }
+        else {
+          dispatch(fetchUserByID(id))
+        }
       }}
     >
       <input
