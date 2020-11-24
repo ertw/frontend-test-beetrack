@@ -5,13 +5,7 @@ import { Users } from './components/Users'
 import { store } from './utilities/store'
 import { AddUser, AddUserButton } from './components/AddUser'
 import { SearchUser } from './components/GetUser'
-
-const styles: { [key: string]: React.CSSProperties } = {
-  searchAndAddContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-}
+import { css } from '@emotion/css'
 
 function App() {
   return (
@@ -21,7 +15,10 @@ function App() {
           Test Beetrack
         </header>
         <main className="main">
-          <div className="searchAndAddContainer" style={styles.searchAndAddContainer}>
+          <div className={css`
+            display: flex;
+            justify-content: space-between;
+          `}>
             <SearchUser />
             <AddUserButton />
             <AddUser />
