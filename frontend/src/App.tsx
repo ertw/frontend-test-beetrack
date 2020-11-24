@@ -3,8 +3,7 @@ import './App.css'
 import { Provider } from 'react-redux'
 import { Users } from './components/Users'
 import { store } from './redux/store'
-import { AddUser, AddUserButton } from './components/AddUser'
-import { SearchUser } from './components/GetUser'
+import { AddUser } from './components/AddUser'
 import { css } from '@emotion/css'
 
 function App() {
@@ -19,8 +18,6 @@ function App() {
             display: flex;
             justify-content: space-between;
           `}>
-            <SearchUser />
-            <AddUserButton />
             <AddUser />
           </div>
           <Users />

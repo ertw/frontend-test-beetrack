@@ -22,7 +22,7 @@ const initialState: UsersSlice = {
   loading: 'idle',
   users: [],
   visibleUsers: {
-    limit: 2,
+    limit: 5,
   },
 }
 

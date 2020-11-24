@@ -1,9 +1,19 @@
+import styled from '@emotion/styled'
 import React, { useState } from 'react'
 import { actions, useAppDispatch } from '../redux/store'
+import searchIcon from '../assets/searchIcon.gif'
 
 const styles: { [key: string]: React.CSSProperties } = {
   addUserButton: {},
 }
+
+const SearchInput = styled.input`
+    border: unset;
+    margin: 1rem 0;
+    background: ${() => `white url(${searchIcon}) left no-repeat`};
+    padding: 4px 4px 4px 24px;
+    width: calc(100% + -28px);
+`
 
 export const SearchUser = () => {
   const dispatch = useAppDispatch()
@@ -21,7 +31,7 @@ export const SearchUser = () => {
         }
       }}
     >
-      <input
+      <SearchInput
         autoFocus
         value={value}
         type="text"

@@ -1,19 +1,18 @@
+import { css } from '@emotion/css'
 import React, { useEffect, useState } from 'react'
 import { actions, useAppDispatch, useTypedSelector } from '../redux/store'
 import { FieldSet, FormLabel, Input, TextArea, ButtonPrimary } from './BaseComponents'
 import { Modal } from './Modal'
-
-const styles: { [key: string]: React.CSSProperties } = {
-  addUserButton: {},
-}
 
 export const AddUserButton = () => {
   const dispatch = useAppDispatch()
   return (
     <ButtonPrimary
       onClick={() => dispatch(actions.toggleAddUserModal())}
-      className="addUserButton"
-      style={styles.addUserButton}
+      className={css`
+      justify-self: end;
+      margin: 1rem 0;
+      `}
     >
       + Nuevo Contacto
     </ButtonPrimary>

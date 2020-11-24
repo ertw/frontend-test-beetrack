@@ -1,3 +1,5 @@
+import { css } from '@emotion/css'
+import styled from '@emotion/styled'
 import React from 'react'
 import missingAvatar from '../assets/missingAvatar.gif'
 
@@ -18,21 +20,37 @@ const styles: { [key: string]: React.CSSProperties } = {
     backgroundColor: '#fff',
   },
   userName: {
-    borderRight: '1px solid #dddddd',
-    padding: '0.5rem 1rem',
-    display: 'grid',
-    gridGap: '0.5rem',
-    gridTemplateColumns: 'min-content auto',
-    width: '12rem',
-    alignItems: 'center',
   },
 }
+
+const UserNameContainer = styled.div`
+  border-right: 1px solid #dddddd;
+  padding: 0.5rem 1rem;
+  display: grid;
+  grid-gap: 0.5rem;
+  grid-template-columns: min-content auto;
+  width: 12rem;
+  align-items: center;
+  background-color: #fff;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  width: 100%;
+`
+
+const UserDescriptionContainer = styled.div`
+  background-color: #fff;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+`
 
 export const User: React.FC<Props> = ({ name, description, photo }) => {
   const [avatarSrc, setAvatarSrc] = React.useState(photo)
   return (
-    <tr className="user" style={styles.user}>
-      <td className="userName" style={styles.userName}>
+    <React.Fragment>
+      <UserNameContainer>
         <img
           className="avatar"
           style={styles.avatar}
@@ -43,8 +61,10 @@ export const User: React.FC<Props> = ({ name, description, photo }) => {
         <p>
           {name}
         </p>
-      </td>
-      <td className="userDescription">{description}</td>
-    </tr>
+      </UserNameContainer>
+      <UserDescriptionContainer>
+        {description}
+      </UserDescriptionContainer>
+    </React.Fragment>
   );
 }
