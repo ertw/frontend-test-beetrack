@@ -1,12 +1,15 @@
 import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import missingAvatar from '../assets/missingAvatar.gif'
+import { actions } from '../redux/usersSlice'
 
 interface Props {
   name: string
   description: string
   photo: string
+  id: number
 }
 
 const styles: { [key: string]: React.CSSProperties } = {
@@ -46,8 +49,9 @@ const UserDescriptionContainer = styled.div`
   border-left: 1px solid #ddd;
 `
 
-export const User: React.FC<Props> = ({ name, description, photo }) => {
+export const User: React.FC<Props> = ({ name, description, photo, id }) => {
   const [avatarSrc, setAvatarSrc] = React.useState(photo)
+  const dispatch = useDispatch()
   return (
     <React.Fragment>
       <UserNameContainer>
@@ -61,6 +65,7 @@ export const User: React.FC<Props> = ({ name, description, photo }) => {
         <p>
           {name}
         </p>
+        <button onClick={() => dispatch(actions.deleteUserByID(id))}>Eliminar</button>
       </UserNameContainer>
       <UserDescriptionContainer>
         {description}

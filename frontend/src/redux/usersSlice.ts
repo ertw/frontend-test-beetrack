@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { RootState } from './store'
 
-const BASE_USERS_API = 'http://localhost:3000/api/users/'
+const BASE_USERS_API = 'http://localhost:3000/api/users'
 
 interface User {
   name: string
@@ -44,6 +44,23 @@ const addUser = createAsyncThunk<UsersSlice["users"], Omit<User, "id"> | undefin
   }
 )
 
+const deleteUserByID = createAsyncThunk<number, number, { state: RootState }>(
+  'users/deleteUserByID',
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`${BASE_USERS_API}/${id}`,{
+        method: 'DELETE',
+      })
+      if (response.status !== 200) {
+        throw new Error(response.statusText)
+      }
+      return (id)
+    } catch (err) {
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
+
 const fetchAllUsers = createAsyncThunk<UsersSlice["users"], number | undefined, { state: RootState }>(
   'users/fetchUsers',
   async (page = 1, thunkAPI) => {
@@ -56,7 +73,7 @@ const fetchAllUsers = createAsyncThunk<UsersSlice["users"], number | undefined, 
 
 const fetchUserByID = createAsyncThunk<User, number, { state: RootState }>(
   'users/fetchUserByID',
-  async (id = 1, { rejectWithValue }) => {
+  async (id, { rejectWithValue }) => {
     try {
       const response = await fetch(`${BASE_USERS_API}/${id}`)
       if (response.status !== 200) {
@@ -103,6 +120,16 @@ export const usersSlice = createSlice({
     builder.addCase(fetchUserByID.rejected, (state) => {
       state.loading = 'failed'
     })
+    builder.addCase(deleteUserByID.pending, (state) => {
+      state.loading = 'pending'
+    })
+    builder.addCase(deleteUserByID.fulfilled, (state, action) => {
+      state.loading = 'idle'
+      state.users = state.users.filter(user => user.id !== action.payload)
+    })
+    builder.addCase(deleteUserByID.rejected, (state) => {
+      state.loading = 'failed'
+    })
   }
 })
 
@@ -110,4 +137,5 @@ export const actions = {
   addUser,
   fetchAllUsers,
   fetchUserByID,
+  deleteUserByID,
 }
