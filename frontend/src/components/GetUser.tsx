@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { actions, useAppDispatch } from '../utilities/store'
+import { actions, useAppDispatch } from '../redux/store'
 
 const styles: { [key: string]: React.CSSProperties } = {
   addUserButton: {},

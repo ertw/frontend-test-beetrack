@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useAppDispatch, useTypedSelector, actions } from '../utilities/store';
+import { useAppDispatch, useTypedSelector, actions } from '../redux/store';
 import { User } from './User';
 
 interface Props {
