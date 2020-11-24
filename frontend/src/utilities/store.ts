@@ -26,7 +26,7 @@ const initialState: UsersSlice = {
   },
 }
 
-export const addUser = createAsyncThunk<UsersSlice["users"], Omit<User, "id"> | undefined, { state: RootState }>(
+const addUser = createAsyncThunk<UsersSlice["users"], Omit<User, "id"> | undefined, { state: RootState }>(
   'users/addUser',
   async (user = {
     name: "test name",
@@ -44,7 +44,7 @@ export const addUser = createAsyncThunk<UsersSlice["users"], Omit<User, "id"> | 
   }
 )
 
-export const fetchAllUsers = createAsyncThunk<UsersSlice["users"], number | undefined, { state: RootState }>(
+const fetchAllUsers = createAsyncThunk<UsersSlice["users"], number | undefined, { state: RootState }>(
   'users/fetchUsers',
   async (page = 1, thunkAPI) => {
     const state = thunkAPI.getState()
@@ -54,7 +54,7 @@ export const fetchAllUsers = createAsyncThunk<UsersSlice["users"], number | unde
   }
 )
 
-export const fetchUserByID = createAsyncThunk<User, number, { state: RootState }>(
+const fetchUserByID = createAsyncThunk<User, number, { state: RootState }>(
   'users/fetchUserByID',
   async (id = 1, { rejectWithValue }) => {
     try {
@@ -106,14 +106,26 @@ export const usersSlice = createSlice({
   }
 })
 
+export const modalsSlice = createSlice({
+  name: 'modals',
+  initialState: { addUserModal: false },
+  reducers: {
+    toggleAddUserModal: (state) => { state.addUserModal = !state.addUserModal }
+  },
+})
+
 export const store = configureStore({
   reducer: {
     users: usersSlice.reducer,
+    modals: modalsSlice.reducer,
   }
 })
 
 export const actions = {
-  ...usersSlice.actions,
+  addUser,
+  fetchAllUsers,
+  fetchUserByID,
+  ...modalsSlice.actions,
 }
 
 type RootState = ReturnType<typeof store.getState>

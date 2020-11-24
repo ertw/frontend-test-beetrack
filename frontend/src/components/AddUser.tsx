@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { addUser, useAppDispatch } from '../utilities/store'
-import styled from 'styled-components'
+import { actions, useAppDispatch, useTypedSelector } from '../utilities/store'
+import styled from '@emotion/styled'
+import { FieldSet, FormLabel, Input, TextArea, ButtonPrimary } from './BaseComponents'
 
 const styles: { [key: string]: React.CSSProperties } = {
   addUserButton: {},
@@ -9,13 +10,13 @@ const styles: { [key: string]: React.CSSProperties } = {
 export const AddUserButton = () => {
   const dispatch = useAppDispatch()
   return (
-    <button
-      onClick={() => dispatch(addUser())}
+    <ButtonPrimary
+      onClick={() => dispatch(actions.toggleAddUserModal())}
       className="addUserButton"
       style={styles.addUserButton}
     >
       + Nuevo Contacto
-    </button>
+    </ButtonPrimary>
   )
 }
 
@@ -25,8 +26,9 @@ const ModalTitle = styled.h2`
   margin: unset;
 `
 
-const ModalBackground = styled.div`
-  display: flex;
+const ModalBackground = styled.div<{ show?: boolean; }>`
+  display: ${props =>
+    props.show ? 'flex' : 'none'};
   position: absolute;
   height: 100%;
   width: 100%;
@@ -42,42 +44,25 @@ const ModalForeground = styled.section`
   background-color: #fff;
   border: 1px solid #dddddd;
 `
-const Input = styled.input.attrs((props) => ({
-  type: "text",
-}))`
-  padding: 4px;
-  border: 1px solid #ddd;
-`
-const TextArea = styled.textarea`
-  padding: 4px;
-  border: 1px solid #ddd;
-`
 
-const FieldSet = styled.fieldset`
-  padding: 0.5rem 1rem;
-  display: grid;
-  border: unset;
-  grid-gap: 0.5rem;
-`
+interface ModalProps {
+  show: boolean;
+  toggle: () => void
+}
 
-const FormLabel = styled.label`
-  color: #676A6C;
-  font-weight: bold;
-  font-size: 12px;
-`
-
-const ButtonPrimary = styled.button`
-  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
-  color: #fff;
-  background-color: #FAB43D;
-  border: unset;
-  border-radius: 2px;
-  padding: 4px;
-  width: 150px;
-`
+const Modal: React.FC<ModalProps> = ({ show, toggle, children }) => {
+  return (
+    <ModalBackground show={show} onClick={toggle}>
+      <ModalForeground>
+        {children}
+      </ModalForeground>
+    </ModalBackground>
+  )
+}
 
 export const AddUser: React.FC = () => {
   const dispatch = useAppDispatch()
+  const { addUserModal } = useTypedSelector(state => state.modals)
   const [nameValue, setNameValue] = useState("")
   const [photoURLValue, setPhotoURLValue] = useState("")
   const [descriptionValue, setDescriptionValue] = useState("")
@@ -88,49 +73,51 @@ export const AddUser: React.FC = () => {
   }, [nameValue, photoURLValue, descriptionValue])
 
   return (
-    <ModalBackground>
-      <ModalForeground>
-        <ModalTitle>
-          Agregar nuevo contacto
+    <Modal show={addUserModal} toggle={() => dispatch(actions.toggleAddUserModal())}>
+      <ModalTitle>
+        Agregar nuevo contacto
         </ModalTitle>
-        <hr />
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            if (isValid) {
-              dispatch(addUser({
-                name: nameValue,
-                photo: photoURLValue,
-                description: descriptionValue,
-              }))
-            }
-          }}
-        >
-          <FieldSet>
-            <FormLabel>
-              Nombre
+      <hr />
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          if (isValid) {
+            dispatch(actions.addUser({
+              name: nameValue,
+              photo: photoURLValue,
+              description: descriptionValue,
+            })).then(() => {
+              dispatch(actions.toggleAddUserModal())
+            }).then(() => {
+              dispatch(actions.fetchAllUsers())
+            })
+          }
+        }}
+      >
+        <FieldSet>
+          <FormLabel>
+            Nombre
           </FormLabel>
-            <Input autoFocus onChange={(e) => setNameValue(e.target.value)} />
-          </FieldSet>
-          <FieldSet>
-            <FormLabel>
-              URL imagen de perfíl
+          <Input autoFocus onChange={(e) => setNameValue(e.target.value)} />
+        </FieldSet>
+        <FieldSet>
+          <FormLabel>
+            URL imagen de perfíl
           </FormLabel>
-            <Input onChange={(e) => setPhotoURLValue(e.target.value)} />
-          </FieldSet>
-          <FieldSet>
-            <FormLabel>
-              Descripción
+          <Input onChange={(e) => setPhotoURLValue(e.target.value)} />
+        </FieldSet>
+        <FieldSet>
+          <FormLabel>
+            Descripción
           </FormLabel>
-            <TextArea onChange={(e) => setDescriptionValue(e.target.value)} />
-          </FieldSet>
-          <FieldSet>
-            <ButtonPrimary disabled={!isValid}>
-              Guardar
+          <TextArea onChange={(e) => setDescriptionValue(e.target.value)} />
+        </FieldSet>
+        <FieldSet>
+          <ButtonPrimary disabled={!isValid}>
+            Guardar
             </ButtonPrimary>
-          </FieldSet>
-        </form>
-      </ModalForeground>
-    </ModalBackground>
+        </FieldSet>
+      </form>
+    </Modal>
   )
 }

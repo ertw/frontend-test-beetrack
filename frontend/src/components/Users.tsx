@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useAppDispatch, useTypedSelector, fetchAllUsers } from '../utilities/store';
+import { useAppDispatch, useTypedSelector, actions } from '../utilities/store';
 import { User } from './User';
 
 interface Props {
@@ -33,7 +33,7 @@ export const Users: React.FC<Props> = () => {
   const [page, setPage] = React.useState(1)
   const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(fetchAllUsers(page))
+    dispatch(actions.fetchAllUsers(page))
   }, [dispatch, page])
 
   if (loading === 'failed') {
@@ -42,7 +42,7 @@ export const Users: React.FC<Props> = () => {
         <p>
           Error loading users
         </p>
-        <button onClick={() => dispatch(fetchAllUsers())}>Reload Users</button>
+        <button onClick={() => dispatch(actions.fetchAllUsers())}>Reload Users</button>
       </div>
     )
   }
