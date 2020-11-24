@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { actions, useAppDispatch, useTypedSelector } from '../utilities/store'
+import { actions, useAppDispatch } from '../utilities/store'
 
 const styles: { [key: string]: React.CSSProperties } = {
   addUserButton: {},
@@ -7,7 +7,6 @@ const styles: { [key: string]: React.CSSProperties } = {
 
 export const SearchUser = () => {
   const dispatch = useAppDispatch()
-  const { users } = useTypedSelector(state => state.users)
   const [value, setValue] = useState("")
   return (
     <form
