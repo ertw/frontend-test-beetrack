@@ -75,7 +75,7 @@ export const Users: React.FC<Props> = () => {
         <button onClick={() => dispatch(actions.fetchAllUsers())}>Reload Users</button>
       </div>
       }
-      {loading === 'idle' && (users?.length > 0 && users.map(user => (<User key={user.id} {...user} />))) || "Usuario no encontrado"}
+      {loading === 'idle' && users?.length > 0 ? users.map(user => (<User key={user.id} {...user} />)) : "Usuario no encontrado"}
       <div className="previousPageContainer">
         <PageNavigationButton
           onClick={() => setPage((prev) => prev > 1 ? prev - 1 : prev)}
