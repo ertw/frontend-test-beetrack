@@ -43,9 +43,10 @@ export const AddUser: React.FC = () => {
               name: nameValue,
               photo: photoURLValue,
               description: descriptionValue,
-            })).then(() => {
-              dispatch(actions.toggleAddUserModal())
-            }).catch((error) => { console.error(error) })
+            }))
+              .then(() => { dispatch(actions.toggleAddUserModal()) })
+              .catch((error) => { console.error(error) })
+              .finally(() => dispatch(actions.fetchAllUsers(1)))
           }
         }}
       >

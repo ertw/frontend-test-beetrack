@@ -26,6 +26,11 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 }
 
+const UserNotFound = styled.p`
+grid-column: span 2;
+padding: 0.5rem;
+`
+
 const TableHeader = styled.div`
 background-color: #fff;
 box-shadow: 0px 2px 2px 0px #ddd;
@@ -75,7 +80,9 @@ export const Users: React.FC<Props> = () => {
         <button onClick={() => dispatch(actions.fetchAllUsers())}>Reload Users</button>
       </div>
       }
-      {loading === 'idle' && users?.length > 0 ? users.map(user => (<User key={user.id} {...user} />)) : "Usuario no encontrado"}
+      {loading === 'idle' && users?.length > 0
+      ? users.map(user => (<User key={user.id} {...user} />))
+      : <UserNotFound>Usuario no encontrado</UserNotFound>}
       <div className="previousPageContainer">
         <PageNavigationButton
           onClick={() => setPage((prev) => prev > 1 ? prev - 1 : prev)}
