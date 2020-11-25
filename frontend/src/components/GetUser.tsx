@@ -22,12 +22,11 @@ export const SearchUser = () => {
     <form
       onSubmit={(e) => {
         e.preventDefault()
-        const id = parseInt(value)
-        if (isNaN(id) /* allow an empty query to get all users */) {
-          dispatch(actions.fetchAllUsers())
+        if (value === "" /* allow an empty query to get all users */) {
+          dispatch(actions.searchUsers(value))
         }
         else {
-          dispatch(actions.fetchUserByID(id))
+          dispatch(actions.searchUsers(value))
         }
       }}
     >
@@ -39,7 +38,7 @@ export const SearchUser = () => {
         className="addUserButton"
         style={styles.addUserButton}
         onChange={(e) => {
-          setValue(e.target.value.replace(/\D/g, ''))
+          setValue(e.target.value)
         }}
       />
     </form>

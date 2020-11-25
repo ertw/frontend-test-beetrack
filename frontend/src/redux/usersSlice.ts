@@ -71,11 +71,11 @@ const fetchAllUsers = createAsyncThunk<UsersSlice["users"], number | undefined, 
   }
 )
 
-const fetchUserByID = createAsyncThunk<User, number, { state: RootState }>(
-  'users/fetchUserByID',
-  async (id, { rejectWithValue }) => {
+const searchUsers = createAsyncThunk<UsersSlice["users"], string, { state: RootState }>(
+  'users/searchUsers',
+  async (query, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${BASE_USERS_API}/${id}`)
+      const response = await fetch(`${BASE_USERS_API}?q=${query}`)
       if (response.status !== 200) {
         throw new Error(response.statusText)
       }
@@ -110,14 +110,14 @@ export const usersSlice = createSlice({
     builder.addCase(fetchAllUsers.rejected, (state) => {
       state.loading = 'failed'
     })
-    builder.addCase(fetchUserByID.pending, (state) => {
+    builder.addCase(searchUsers.pending, (state) => {
       state.loading = 'pending'
     })
-    builder.addCase(fetchUserByID.fulfilled, (state, action) => {
+    builder.addCase(searchUsers.fulfilled, (state, action) => {
       state.loading = 'idle'
-      state.users = [action.payload]
+      state.users = action.payload
     })
-    builder.addCase(fetchUserByID.rejected, (state) => {
+    builder.addCase(searchUsers.rejected, (state) => {
       state.loading = 'failed'
     })
     builder.addCase(deleteUserByID.pending, (state) => {
@@ -136,6 +136,6 @@ export const usersSlice = createSlice({
 export const actions = {
   addUser,
   fetchAllUsers,
-  fetchUserByID,
+  searchUsers,
   deleteUserByID,
 }
