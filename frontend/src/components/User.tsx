@@ -1,3 +1,4 @@
+import { css } from '@emotion/css'
 import styled from '@emotion/styled'
 import React from 'react'
 import { useDispatch } from 'react-redux'
@@ -16,6 +17,7 @@ const Avatar = styled.img`
     height: 50px;
     width: 50px;
     object-fit: cover;
+    grid-row: 2;
 `
 
 const UserNameContainer = styled.div`
@@ -27,13 +29,13 @@ const UserNameContainer = styled.div`
   width: 12rem;
   align-items: center;
   background-color: #fff;
-  padding: 0.5rem;
   border-bottom: 1px solid #ddd;
   border-left: 1px solid #ddd;
   width: 100%;
   &:hover .delete-button {
     visibility: visible;
   };
+  grid-template-rows: 15px auto 15px;
 `
 
 const UserDescriptionContainer = styled.div`
@@ -54,6 +56,7 @@ const DeleteButton =styled.button`
     padding: unset;
     visibility: hidden;
     cursor: pointer;
+    grid-row: 3;
 `
 
 export const User: React.FC<Props> = ({ name, description, photo, id }) => {
@@ -67,7 +70,7 @@ export const User: React.FC<Props> = ({ name, description, photo, id }) => {
           alt={`${name} avatar`}
           onError={() => { setAvatarSrc(missingAvatar) }}
         />
-        <p>
+        <p className={css`grid-row: 2;`}>
           {name}
         </p>
         <DeleteButton className="delete-button" onClick={() => dispatch(actions.deleteUserByID(id))}>Eliminar</DeleteButton>
