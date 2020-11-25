@@ -13,8 +13,8 @@ interface Props {
 
 const Avatar = styled.img`
     border-radius: 50%;
-    height: 50;
-    width: 50;
+    height: 50px;
+    width: 50px;
     object-fit: cover;
 `
 
@@ -31,6 +31,9 @@ const UserNameContainer = styled.div`
   border-bottom: 1px solid #ddd;
   border-left: 1px solid #ddd;
   width: 100%;
+  &:hover .delete-button {
+    visibility: visible;
+  };
 `
 
 const UserDescriptionContainer = styled.div`
@@ -39,6 +42,18 @@ const UserDescriptionContainer = styled.div`
   border-bottom: 1px solid #ddd;
   border-right: 1px solid #ddd;
   border-left: 1px solid #ddd;
+`
+
+const DeleteButton =styled.button`
+    grid-column: 2;
+    width: min-content;
+    background: unset;
+    border: unset;
+    font-weight: 400;
+    color: #FAB43D;
+    padding: unset;
+    visibility: hidden;
+    cursor: pointer;
 `
 
 export const User: React.FC<Props> = ({ name, description, photo, id }) => {
@@ -55,7 +70,7 @@ export const User: React.FC<Props> = ({ name, description, photo, id }) => {
         <p>
           {name}
         </p>
-        <button onClick={() => dispatch(actions.deleteUserByID(id))}>Eliminar</button>
+        <DeleteButton className="delete-button" onClick={() => dispatch(actions.deleteUserByID(id))}>Eliminar</DeleteButton>
       </UserNameContainer>
       <UserDescriptionContainer>
         {description}
