@@ -30,4 +30,15 @@ export const ButtonPrimary = styled.button`
   border-radius: 2px;
   padding: 4px;
   width: 150px;
+  cursor: pointer;
+`
+
+export const ButtonSecondary = styled.button`
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+  background: transparent;
+  border: unset;
+  padding: 0.5rem;
+  font-weight: bold;
+  color: #616161;
+  cursor: pointer;
 `

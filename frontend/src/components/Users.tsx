@@ -5,25 +5,10 @@ import { css } from '@emotion/css'
 import { SearchUser } from './GetUser';
 import { AddUserButton } from './AddUser';
 import styled from '@emotion/styled';
+import nextArrow from '../assets/nextArrow.gif'
+import { ButtonSecondary } from './BaseComponents';
 
 interface Props {
-}
-
-const styles: { [key: string]: React.CSSProperties } = {
-  users: {
-    minWidth: '100%',
-  },
-  footer: {
-  },
-  previousPageContainer: {
-    paddingLeft: 'unset',
-  },
-  nextPageContainer: {
-    paddingRight: 'unset',
-  },
-  nextButton: {
-    float: 'right',
-  },
 }
 
 const UserNotFound = styled.p`
@@ -36,15 +21,6 @@ background-color: #fff;
 box-shadow: 0px 2px 2px 0px #ddd;
 z-index: 1;
 padding: 0.5rem;
-`
-
-const ButtonSecondary = styled.button`
-  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
-  background: transparent;
-  border: unset;
-  padding: 0.5rem;
-  font-weight: bold;
-  color: #616161;
 `
 
 interface PageNavigationButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> { }
@@ -95,7 +71,11 @@ export const Users: React.FC<Props> = () => {
         <PageNavigationButton
           onClick={() => setPage((prev) => prev + 1)}
           disabled={users?.length < 2 || loading !== 'idle'}
-          style={styles.nextButton}
+          className={css`
+          float: right;
+          background: transparent url(${nextArrow}) right no-repeat !important;
+          padding-right: 1.5rem !important;
+          `}
         >
           Siguiente Página
             </PageNavigationButton>
