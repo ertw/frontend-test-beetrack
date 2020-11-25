@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { RootState } from './store'
 
-const BASE_USERS_API = 'http://localhost:3000/api/users'
+const BASE_USERS_API = 'http://localhost:3001/api/users'
 
 interface User {
   name: string

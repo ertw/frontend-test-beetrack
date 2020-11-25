@@ -1,0 +1,26 @@
+version: '2'
+services:
+  backend:
+    build:
+      context: ./backend/
+    command: npm start
+    volumes:
+      - ./backend/:/usr/app
+      - /usr/app/node_modules
+    ports:
+      - "3001:3001"
+    # env_file: ./server/.env # TODO - uncomment this to auto-load your .env file!
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+  frontend:
+    build:
+      context: ./frontend/
+    command: npm start
+    volumes:
+      - ./frontend/:/usr/app
+      - /usr/app/node_modules
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
