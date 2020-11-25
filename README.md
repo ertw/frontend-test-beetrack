@@ -7,6 +7,8 @@ The project is composed of a React frontend and a RESTful backend. To run them b
 docker-compose up
 ```
 
+...and then reach the application running at http://localhost:3000
+
 or they can be run individually:
 ```shell
 npm start
