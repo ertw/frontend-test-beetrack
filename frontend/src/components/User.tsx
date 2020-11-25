@@ -11,19 +11,12 @@ interface Props {
   id: number
 }
 
-const styles: { [key: string]: React.CSSProperties } = {
-  avatar: {
-    borderRadius: '50%',
-    height: 50,
-    width: 50,
-    objectFit: 'cover',
-  },
-  user: {
-    backgroundColor: '#fff',
-  },
-  userName: {
-  },
-}
+const Avatar = styled.img`
+    border-radius: 50%;
+    height: 50;
+    width: 50;
+    object-fit: cover;
+`
 
 const UserNameContainer = styled.div`
   border-right: 1px solid #dddddd;
@@ -54,9 +47,7 @@ export const User: React.FC<Props> = ({ name, description, photo, id }) => {
   return (
     <React.Fragment>
       <UserNameContainer>
-        <img
-          className="avatar"
-          style={styles.avatar}
+        <Avatar
           src={avatarSrc}
           alt={`${name} avatar`}
           onError={() => { setAvatarSrc(missingAvatar) }}

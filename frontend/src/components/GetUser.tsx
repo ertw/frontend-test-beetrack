@@ -3,10 +3,6 @@ import React, { useState } from 'react'
 import { actions, useAppDispatch } from '../redux/store'
 import searchIcon from '../assets/searchIcon.gif'
 
-const styles: { [key: string]: React.CSSProperties } = {
-  addUserButton: {},
-}
-
 const SearchInput = styled.input`
     border: unset;
     margin: 1rem 0;
@@ -36,7 +32,6 @@ export const SearchUser = () => {
         type="text"
         placeholder="Buscar contacto"
         className="addUserButton"
-        style={styles.addUserButton}
         onChange={(e) => {
           setValue(e.target.value)
         }}
