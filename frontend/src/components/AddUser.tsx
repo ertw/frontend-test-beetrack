@@ -1,8 +1,13 @@
 import { css } from '@emotion/css'
+import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
 import { actions, useAppDispatch, useTypedSelector } from '../redux/store'
 import { FieldSet, FormLabel, Input, TextArea, ButtonPrimary } from './BaseComponents'
 import { Modal } from './Modal'
+
+const Required = styled.span`
+color: red;
+`
 
 export const AddUserButton = () => {
   const dispatch = useAppDispatch()
@@ -52,19 +57,19 @@ export const AddUser: React.FC = () => {
       >
         <FieldSet>
           <FormLabel>
-            Nombre
+            Nombre<Required>*</Required>
           </FormLabel>
           <Input autoFocus onChange={(e) => setNameValue(e.target.value)} />
         </FieldSet>
         <FieldSet>
           <FormLabel>
-            URL imagen de perfíl
+            URL imagen de perfíl<Required>*</Required>
           </FormLabel>
           <Input onChange={(e) => setPhotoURLValue(e.target.value)} />
         </FieldSet>
         <FieldSet>
           <FormLabel>
-            Descripción
+            Descripción<Required>*</Required>
           </FormLabel>
           <TextArea onChange={(e) => setDescriptionValue(e.target.value)} />
         </FieldSet>
